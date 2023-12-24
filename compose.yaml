@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build:
+      context: ./src/app
+      target: frontend
+    expose:
+      - 8080
+    ports:
+      - "8050:8080"
+    networks:
+      - vue-flask
+    volumes:
+      - ./src/app:/usr/src/app
+  
+  backend:
+    build:
+      context: ./src/server
+      target: backend
+    depends_on:
+      - db
+    environment:
+      - MONGO_URI=mongodb://db:27017/url-shortner
+    expose:
+      - 5000
+    networks:
+      - vue-flask
+      - flask-mongo
+    volumes:
+      - ./src/server:/usr/src/server
+
+  db:
+    image: mongo:6
+    networks:
+      - flask-mongo
+    expose:
+      - 27017
+
+networks:
+  vue-flask:
+  flask-mongo:

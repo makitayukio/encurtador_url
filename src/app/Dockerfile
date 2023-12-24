@@ -1,5 +1,5 @@
 # create image based on latest version
-FROM node:latest
+FROM node:latest AS frontend
 
 # create main directory
 WORKDIR /usr/src/app
